@@ -1,0 +1,43 @@
+# ---- Secrets & env ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ---- Exports & logs ----
+exports/
+*.log
+
+# ---- Editor / OS ----
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ---- MCP Inspector ----
+.mcp/
+
+# ---- WorkBuddy workspace memory ----
+.workbuddy/

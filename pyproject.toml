@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mysql-mcp-pro"
+version = "2.0.0"
+description = "A production-grade MySQL MCP server with connection pooling, transactions, EXPLAIN analysis, CSV/JSON export, ER graph, audit log, and prompt templates."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "CT" }
+]
+keywords = ["mcp", "mysql", "model-context-protocol", "database", "ai", "llm", "tools"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Database",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "mcp[cli]>=1.0.0",
+    "pymysql>=1.1.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/CCCT173/mysql-mcp-pro"
+Repository = "https://github.com/CCCT173/mysql-mcp-pro"
+Issues = "https://github.com/CCCT173/mysql-mcp-pro/issues"
+
+[project.scripts]
+mysql-mcp-pro = "server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/server.py",
+    "/README.md",
+    "/README.en.md",
+    "/LICENSE",
+    "/.env.example",
+    "/pyproject.toml",
+]
