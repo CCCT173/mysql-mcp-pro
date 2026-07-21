@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "mysql-mcp-pro"
-version = "2.0.0"
+version = "2.0.2"
 description = "A production-grade MySQL MCP server with connection pooling, transactions, EXPLAIN analysis, CSV/JSON export, ER graph, audit log, and prompt templates."
 readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.10"
