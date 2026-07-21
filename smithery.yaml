@@ -1,0 +1,56 @@
+# Smithery.ai MCP server configuration
+# Reference: https://smithery.ai/docs/servers
+$schema: https://smithery.ai/schemas/smithery.schema.json
+name: mysql-mcp-pro
+description: A production-grade MySQL MCP server with connection pooling, transactions, EXPLAIN analysis, CSV/JSON export, ER graph, audit log, and prompt templates.
+version: 2.0.2
+repository: https://github.com/CCCT173/mysql-mcp-pro
+homepage: https://github.com/CCCT173/mysql-mcp-pro
+license: MIT
+author: CCCT173
+keywords:
+  - mysql
+  - database
+  - sql
+  - mcp
+  - model-context-protocol
+  - claude
+  - cursor
+  - dba
+  - data-analysis
+
+# MCP 协议启动方式
+startCommand:
+  type: stdio
+  command: mysql-mcp-pro
+  configSchema:
+    type: object
+    properties:
+      mysql_host:
+        type: string
+        description: MySQL server hostname
+        default: localhost
+      mysql_port:
+        type: integer
+        description: MySQL server port
+        default: 3306
+      mysql_user:
+        type: string
+        description: MySQL username
+        default: root
+      mysql_password:
+        type: string
+        description: MySQL password
+      mysql_database:
+        type: string
+        description: Default database name
+      read_only:
+        type: boolean
+        description: Enable read-only mode (block all write/DDL statements)
+        default: false
+      allow_ddl:
+        type: boolean
+        description: Allow DDL statements (CREATE/ALTER/DROP/TRUNCATE)
+        default: false
+    required:
+      - mysql_password
