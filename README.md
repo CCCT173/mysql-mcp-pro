@@ -130,6 +130,32 @@ EXPORT_DIR=./exports     # 导出目录
 
 在项目根目录创建 `.cursor/mcp.json`（Cursor）或在 Cline 设置中添加，格式同上。
 
+## Tools
+
+> Tools are automatically extracted by MCP registries (Smithery, mcp.so, glama, etc.).
+
+- **ping** — Test MySQL connection; returns server version and connection-pool stats.
+- **get_server_status** — Key MySQL status metrics (connections, QPS, slow queries, InnoDB rows, traffic).
+- **list_databases** — List all databases (system vs user).
+- **list_tables** — List tables with engine, row count, size, comment. Optional `database` argument.
+- **describe_table** — Show table schema: columns, primary key, indexes, foreign keys, CREATE SQL. Arguments: `table` (required), `database` (optional).
+- **list_views** — List views in the database.
+- **list_routines** — List stored procedures or functions. Arguments: `routine_type` (`PROCEDURE`/`FUNCTION`), `database`.
+- **list_triggers** — List triggers in the database.
+- **er_graph** — Cross-table foreign-key graph as nodes + edges, ready for ER diagrams.
+- **execute_query** — Execute any SQL (read/write/DDL, safety-guarded), parameterized. Arguments: `sql`, `database`, `params`, `session_id`.
+- **execute_select** — Read-only SELECT/SHOW/DESCRIBE/EXPLAIN with extra safety layer. Arguments: `sql`, `database`, `params`, `limit`.
+- **get_table_data** — Quick paginated table fetch. Arguments: `table`, `columns`, `where`, `order_by`, `limit`, `offset`.
+- **count_rows** — Count rows in a table with optional WHERE. Arguments: `table`, `database`, `where`.
+- **explain_query** — Run `EXPLAIN` on a query and return plain-language performance insights. Arguments: `sql`, `database`, `params`, `format`.
+- **export_query** — Export SELECT results to a CSV (UTF-8 BOM, Excel-friendly) or JSON file. Arguments: `sql`, `filename`, `format` (`csv`/`json`), `database`, `params`.
+- **list_query_history** — Recent SQL executed in this session (duration, row count, errors). Argument: `limit`.
+- **begin_transaction** — Start a new transaction; returns a `session_id` for chained calls. Argument: `database`.
+- **commit_transaction** — Commit an open transaction. Argument: `session_id`.
+- **rollback_transaction** — Rollback an open transaction. Argument: `session_id`.
+- **show_processlist** — Show the current MySQL process list (`SHOW FULL PROCESSLIST`).
+- **kill_query** — Kill a MySQL process (requires SUPER privilege). Argument: `process_id`.
+
 ## 🛠 工具一览（25 个）
 
 ### 连接 & 状态
