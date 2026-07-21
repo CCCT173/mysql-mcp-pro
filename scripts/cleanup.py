@@ -1,8 +1,11 @@
+"""Clean up test data after test runs. Reads credentials from env/.env."""
 import os, sys
-os.environ.update({
-    'MYSQL_HOST':'localhost','MYSQL_PORT':'3306','MYSQL_USER':'root',
-    'MYSQL_PASSWORD':'${MYSQL_PASSWORD}','MYSQL_DATABASE':'mcp_test','MYSQL_CHARSET':'utf8mb4',
-})
+from pathlib import Path
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).resolve().parent.parent / '.env')
+except ImportError:
+    pass
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import server
 r = server.execute_query("DELETE FROM users WHERE email = 'commit@mcp.local'")

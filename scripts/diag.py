@@ -85,21 +85,23 @@ s.close()
 print('\n--- mysql.connector 尝试 ---')
 try:
     import mysql.connector
+    import os
+    test_pw = os.getenv('MYSQL_PASSWORD', '')
     for plugin in [None, 'mysql_native_password', 'caching_sha2_password', 'mysql_clear_password']:
-        for pw in ['${MYSQL_PASSWORD}', '${MYSQL_PASSWORD}']:
+        for pw in ([test_pw] if test_pw else []):
             try:
-                kw = dict(host=HOST, port=PORT, user='root', password=pw,
+                kw = dict(host=HOST, port=PORT, user=os.getenv('MYSQL_USER','root'), password=pw,
                           connection_timeout=5, autocommit=True)
                 if plugin:
                     kw['auth_plugin'] = plugin
                 c = mysql.connector.connect(**kw)
                 cur = c.cursor()
                 cur.execute('SELECT VERSION(), USER(), @@ssl_cipher')
-                print(f'OK plugin={plugin} pw={pw}: {cur.fetchone()}')
+                print(f'OK plugin={plugin} pw=<set>: {cur.fetchone()}')
                 c.close()
                 sys.exit(0)
             except Exception as e:
-                print(f'FAIL plugin={plugin} pw={pw}: {e}')
+                print(f'FAIL plugin={plugin}: {e}')
 except ImportError:
     print('mysql.connector 未安装')
 

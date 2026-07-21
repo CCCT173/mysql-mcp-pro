@@ -1,12 +1,35 @@
-"""v2 全功能回归测试"""
-import os, sys, json, glob
+"""v2 全功能回归测试
 
-os.environ.update({
-    'MYSQL_HOST':'localhost','MYSQL_PORT':'3306','MYSQL_USER':'root',
-    'MYSQL_PASSWORD':'${MYSQL_PASSWORD}','MYSQL_DATABASE':'mcp_test','MYSQL_CHARSET':'utf8mb4',
-    'READ_ONLY':'false','MAX_RESULT_ROWS':'1000','QUERY_TIMEOUT':'30','ALLOW_DDL':'false',
-    'AUDIT_LOG':'true','POOL_SIZE':'3',
-})
+Credentials are read from environment variables (or .env in repo root).
+Required: MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE
+"""
+import os, sys, json, glob
+from pathlib import Path
+
+# Load .env for local testing (never committed with real secrets)
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).resolve().parent.parent / '.env')
+except ImportError:
+    pass
+
+# Set test defaults (safe, non-secret values; real password must come from env/.env)
+os.environ.setdefault('MYSQL_HOST', 'localhost')
+os.environ.setdefault('MYSQL_PORT', '3306')
+os.environ.setdefault('MYSQL_USER', 'root')
+os.environ.setdefault('MYSQL_DATABASE', 'mcp_test')
+os.environ.setdefault('MYSQL_CHARSET', 'utf8mb4')
+os.environ.setdefault('READ_ONLY', 'false')
+os.environ.setdefault('MAX_RESULT_ROWS', '1000')
+os.environ.setdefault('QUERY_TIMEOUT', '30')
+os.environ.setdefault('ALLOW_DDL', 'false')
+os.environ.setdefault('AUDIT_LOG', 'true')
+os.environ.setdefault('POOL_SIZE', '3')
+
+if not os.environ.get('MYSQL_PASSWORD'):
+    print("ERROR: MYSQL_PASSWORD environment variable is required to run tests", file=sys.stderr)
+    sys.exit(1)
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # 清理之前的导出

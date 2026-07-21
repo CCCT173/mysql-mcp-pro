@@ -1,9 +1,15 @@
-import pymysql
+"""Create the sample mcp_test database and insert seed data.
 
-conn = pymysql.connect(
-    host='localhost', port=3306, user='root',
-    password='${MYSQL_PASSWORD}', charset='utf8mb4', autocommit=True,
-)
+Reads credentials from environment variables (or .env in repo root):
+    MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE
+"""
+import os
+import sys
+sys.path.insert(0, os.path.dirname(__file__))
+import pymysql
+from _db_config import get_conn_kwargs
+
+conn = pymysql.connect(**get_conn_kwargs())
 with conn.cursor() as cur:
     cur.execute('SELECT VERSION()')
     print('MySQL版本:', cur.fetchone()[0])

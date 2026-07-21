@@ -1,22 +1,31 @@
 """
 端到端验证：直接导入 server 模块，调用 MCP 工具函数（绕过 stdio 传输层）。
 这样既能验证真实工具逻辑，又不会卡在 stdio 协议协商上。
+
+Credentials are read from environment variables (or .env in repo root).
 """
 import os, sys, json
+from pathlib import Path
 
-# 注入环境变量
-os.environ.update({
-    'MYSQL_HOST': 'localhost',
-    'MYSQL_PORT': '3306',
-    'MYSQL_USER': 'root',
-    'MYSQL_PASSWORD': '${MYSQL_PASSWORD}',
-    'MYSQL_DATABASE': 'mcp_test',
-    'MYSQL_CHARSET': 'utf8mb4',
-    'READ_ONLY': 'false',
-    'MAX_RESULT_ROWS': '1000',
-    'QUERY_TIMEOUT': '30',
-    'ALLOW_DDL': 'false',
-})
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).resolve().parent.parent / '.env')
+except ImportError:
+    pass
+
+required = ['MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD']
+missing = [k for k in required if not os.environ.get(k)]
+if missing:
+    print(f"ERROR: missing required env vars: {', '.join(missing)}", file=sys.stderr)
+    sys.exit(1)
+
+os.environ.setdefault('MYSQL_PORT', '3306')
+os.environ.setdefault('MYSQL_DATABASE', 'mcp_test')
+os.environ.setdefault('MYSQL_CHARSET', 'utf8mb4')
+os.environ.setdefault('READ_ONLY', 'false')
+os.environ.setdefault('MAX_RESULT_ROWS', '1000')
+os.environ.setdefault('QUERY_TIMEOUT', '30')
+os.environ.setdefault('ALLOW_DDL', 'false')
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import server
